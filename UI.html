@@ -60,10 +60,22 @@
     </div>
 <br>
 <div
-    class="button">
+    id="add" class="button" onclick="add_note()">
           Add
       </div>
-  
+<script>
+  const button = document.getElementById('add');
 
+button.addEventListener('click', function() {
+    // Create a new div element
+    const newBox = document.createElement('div');
+    newBox.classList.add('add_note_box');
+    newBox.textContent = 'Add your note here';
+
+    // Add the new box to the body
+    document.body.appendChild(newBox);
+  });
+
+</script>
 </body>
 </html>
