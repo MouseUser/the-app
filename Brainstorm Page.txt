@@ -1,0 +1,18 @@
+SideQuest (virtual bulletin board)
+Online RIT marketplace and job listing platform
+
+Users need to make an account with an email ending in @rit.edu or @g.rit.edu
+Users spend money to buy “QuestPoints” which then can be posted onto a bulletin 
+
+    • add ai
+    • anonymous posting optional(?)
+    • communication between parties(?)
+    • add achievements
+    • filters
+        ◦ on/off campus
+        ◦ costly/paying
+        ◦ 
+    • estimated time powered by ai(?)
+    • trades, barters, paid opportunities, tips(?)
+    • locations on in-person events/activities
+    • battle pass
