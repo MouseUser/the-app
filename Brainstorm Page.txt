@@ -16,3 +16,7 @@ Users spend money to buy “QuestPoints” which then can be posted onto a bulle
     • trades, barters, paid opportunities, tips(?)
     • locations on in-person events/activities
     • battle pass
+
+    notify users when a something is posted to a topic they follow
+    make topic tags to sort posts
+    
