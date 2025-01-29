@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+<style>
+    body {
+        text-align: center;
+        font-family: 'Courier New', Courier, monospace;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Header Styling */
+    .header {
+        background-color: #333;
+        color: white;
+        padding: 20px;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+    }
+
+    .main-container {
+        display: flex;
+        justify-content: flex-start; /* Moves board to the left */
+        align-items: flex-start;
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    /* Board Styling */
+    .box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 850px;
+        height: 600px;
+        border: 3px solid #000;
+        background-color: #f5cccc;
+        padding: 10px;
+        margin-right: 20px; /* Creates space between board and add section */
+        text-align: center;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    /* Container for Notes */
+    .notes-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: 100%;
+        padding-top: 10px;
+    }
+
+    /* Add Note Section */
+    .add-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Button Styling */
+    .button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        font-family: 'Courier New', Courier, monospace;
+        cursor: pointer;
+        border-radius: 3px;
+        margin-bottom: 10px;
+    }
+
+    /* Add Note Form Box */
+    .add_box {
+        width: 300px;
+        border: 3px solid #000;
+        background-color: #ffffff;
+        padding: 20px;
+        text-align: center;
+    }
+
+    /* Note Styling */
+    .note {
+        width: 150px;
+        height: 150px;
+        background-color: #fff;
+        border: 2px solid #000;
+        padding: 10px;
+        margin: 5px;
+        text-align: center;
+        word-wrap: break-word;
+        position: relative;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    /* Delete Button */
+    .delete-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 4px 6px;
+        font-size: 12px;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+
+    /* Cancel and Submit Buttons */
+    .cancel-button, .submit-button {
+        background-color: gray;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        margin-top: 5px;
+        cursor: pointer;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+    .submit-button {
+        background-color: #4CAF50;
+    }
+</style>
+<title>The App</title>
+</head>
+<body>
+
+<!-- New Header Section -->
+<div class="header">
+    The App
+</div>
+
+<p>The App does not do everything. It only does what it can do, and does not do what it cannot.</p>
+
+<!-- Main Content Wrapper -->
+<div class="main-container">
+
+    <!-- Board where notes will be added -->
+    <div class="box" id="board">
+        <strong>Board</strong>
+        <div class="notes-container" id="notesContainer"></div>
+    </div>
+
+    <!-- Add Section -->
+    <div class="add-section">
+        <button class="button" onclick="show_add_note_form()">Add</button>
+        <div id="noteFormContainer"></div>
+    </div>
+
+</div>
+
+<script>
+// Load saved notes from localStorage when the page loads
+document.addEventListener("DOMContentLoaded", loadNotes);
+
+// Function to show the input form
+function show_add_note_form() {
+    var formContainer = document.getElementById("noteFormContainer");
+
+    if (document.getElementById("noteForm")) return;
+
+    var formHTML = `
+        <div class='add_box' id="noteForm">
+            <strong>Add Note</strong>
+            <form onsubmit="return add_note(event)">
+                <textarea id="noteText" rows='4' cols='25' placeholder="Write your note here..." autofocus></textarea>
+                <br>
+                <button type='submit' class='submit-button'>Add</button>
+                <button type='button' class='cancel-button' onclick="close_form()">Cancel</button>
+            </form>
+        </div>`;
+    
+    formContainer.innerHTML = formHTML;
+}
+
+// Function to close the form
+function close_form() {
+    document.getElementById("noteFormContainer").innerHTML = "";
+}
+
+// Function to add a note inside the board
+function add_note(event) {
+    event.preventDefault();
+
+    var noteText = document.getElementById("noteText").value.trim();
+    
+    if (noteText === "") {
+        alert("Please enter some text before adding.");
+        return false;
+    }
+
+    var newNote = document.createElement("div");
+    newNote.classList.add("note");
+    newNote.innerHTML = `
+        <button class='delete-button' onclick='deleteNote(this)'>X</button>
+        ${noteText}
+    `;
+
+    document.getElementById("notesContainer").appendChild(newNote);
+
+    saveNotes();  // Save to localStorage
+    close_form();
+    return false;
+}
+
+// Function to delete a note
+function deleteNote(button) {
+    button.parentElement.remove();
+    saveNotes();  // Update localStorage
+}
+
+// Function to save notes to localStorage
+function saveNotes() {
+    var notes = [];
+    document.querySelectorAll(".note").forEach(note => {
+        notes.push(note.innerHTML);
+    });
+    localStorage.setItem("notes", JSON.stringify(notes));
+}
+
+// Function to load notes from localStorage
+function loadNotes() {
+    var savedNotes = JSON.parse(localStorage.getItem("notes") || "[]");
+    savedNotes.forEach(noteHTML => {
+        var newNote = document.createElement("div");
+        newNote.classList.add("note");
+        newNote.innerHTML = noteHTML;
+        document.getElementById("notesContainer").appendChild(newNote);
+    });
+}
+</script>
+
+</body>
+</html>
