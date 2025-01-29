@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body {
+        text-align: center;
+        font-family: Papyrus, fantasy;
+    }
+    .container {
+        text-align: center;
+    }
+    .box {
+        display: inline-block;
+        width: 600px;
+        height: 400px;
+        border: 3px solid #000;
+        background-color: #f5cccc;
+        padding: 10px;
+        margin: 20px;
+        text-align: center;
+        overflow-y: auto; /* Allows scrolling when there are many notes */
+    }
+    .button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+    .add_box {
+        display: inline-block;
+        width: 300px;
+        height: 200px;
+        border: 3px solid #000;
+        background-color: #ffffff;
+        padding: 10px;
+        margin: 10px;
+        text-align: center;
+    }
+    .note {
+        width: 30%;
+        background-color: #fff;
+        border: 2px solid #000;
+        padding: 10px;
+        margin: 5px auto;
+        text-align: center;
+        word-wrap: break-word;
+        position: relative;
+    }
+    .delete-button {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        background-color: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+<title>The App</title>
+</head>
+<body>
+
+<h1>The App</h1>
+<p>The App does not do everything. It only does what it can do, and does not do what it cannot.</p>
+
+<!-- Board where notes will be added -->
+<div class="box" id="board">
+    <strong>Board</strong>
+</div>
+<br>
+<!-- Add button to open note form -->
+<div class="button" onclick="show_add_note_form()">Add</div>
+
+<!-- Placeholder for the note input form -->
+<div id="noteFormContainer"></div>
+
+<script>
+// Function to show the input form
+function show_add_note_form() {
+    var formContainer = document.getElementById("noteFormContainer");
+    
+    // Check if form already exists
+    if (document.getElementById("noteForm")) return;
+
+    // Create a form element dynamically
+    var formHTML = `
+        <div class='add_box' id="noteForm">
+            <strong>Add Note</strong>
+            <form onsubmit="return add_note()">
+                <textarea id="noteText" rows='5' cols='30' placeholder="Write your note here..."></textarea>
+                <br>
+                <input type='submit' value='Add'>
+            </form>
+        </div>`;
+    
+    formContainer.innerHTML = formHTML;
+}
+
+// Function to add a note inside the board
+function add_note() {
+    var noteText = document.getElementById("noteText").value.trim();
+    
+    if (noteText === "") {
+        alert("Please enter some text before adding.");
+        return false;
+    }
+
+    // Create a new note element
+    var newNote = document.createElement("div");
+    newNote.classList.add("note");
+    newNote.innerHTML = `
+        <button class='delete-button' onclick='this.parentElement.remove()'>X</button>
+        ${noteText}
+    `;
+
+    // Append the new note to the board
+    document.getElementById("board").appendChild(newNote);
+
+    // Clear the input field
+    document.getElementById("noteText").value = "";
+
+    // Remove the form after submission
+    document.getElementById("noteFormContainer").innerHTML = "";
+
+    return false; // Prevent page reload
+}
+</script>
+
+</body>
+</html>
