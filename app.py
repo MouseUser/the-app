@@ -12,10 +12,4 @@ def hello():
 
 @app.route('/register', methods=['POST', "GET"])
 def register():
-    error = None
-    if request.method == 'POST':
-        if valid_login(request.form['username'], request.form['password']):
-            log_the_user_in(request.form['username'])
-        else:
-            error = "invalid username/password"
-    return(render_template("register.html", error=error))
+    return(render_template("login.html"))
