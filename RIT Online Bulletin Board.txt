@@ -1,0 +1,13 @@
+RIT Online Bulletin Board
+
+Only for RIT students -- check for "@rit.edu" in sign in input, and/or send a verification email with a link
+
+Problems:
+	Scaling (down the line)
+	Moderation
+		content filters, other ???
+
+Why do we care:
+	There is currently no RIT-specific bulletin board-esque site or service other than Discord, Instagram, and Snapchat. 
+	Will be used for: buy/sell, event listings, announcements
+
